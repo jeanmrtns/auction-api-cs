@@ -1,19 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RocketseatAuction.API.Contracts;
 using RocketseatAuction.API.Entities;
-using RocketseatAuction.API.UseCases.Auctions.GetCurrent;
 
 namespace RocketseatAuction.API.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class AuctionController : ControllerBase
+public class AuctionController : RocketseatAuctionControllerBase
 {
     [HttpGet]
     [ProducesResponseType(typeof(Auction), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public IActionResult GetCurrentAuction()
+    public IActionResult GetCurrentAuction([FromServices] IGetCurrentAuctionsUseCase useCase)
     {
-        var useCase = new GetCurrentAuctionsUseCase();
         var result = useCase.Execute();
 
         if (result is null)
